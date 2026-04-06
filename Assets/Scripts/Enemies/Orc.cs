@@ -48,7 +48,7 @@ public class OrcAttack2D : MonoBehaviour
         StartCoroutine(ResetAttack());
         Vector3 attackPos = transform.position + (spriteRenderer.flipX ? Vector3.left : Vector3.right) * attackRange;
 
-        Collider2D hit = Physics2D.OverlapCircle(attackPos, 2f, playerLayer);
+        Collider2D hit = Physics2D.OverlapCircle(attackPos, 1f, playerLayer);
         if (hit != null)
         {
             hit.GetComponent<PlayerHealth>().TakeDamage(damage);
