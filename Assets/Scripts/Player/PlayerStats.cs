@@ -1,0 +1,35 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerStats : MonoBehaviour
+{
+    [SerializeField] float baseHP = 100f;
+    [SerializeField] float baseSpeed = 10;
+    private Dictionary<StatType, float> stats = new Dictionary<StatType, float>();
+
+    public event Action<StatType, float> OnStatChanged;
+
+    void Awake()
+    {
+        stats[StatType.Health] = baseHP;
+        stats[StatType.Speed] = baseSpeed;
+    }
+
+    public float GetStat(StatType stat)
+    {
+        return stats[stat];
+    }
+
+    public void SetStat(StatType stat, float value)
+    {
+        stats[stat] = value;
+        OnStatChanged?.Invoke(stat, value);
+    }
+
+    public void ModifyStat(StatType stat, float amount)
+    {
+        stats[stat] += amount;
+        OnStatChanged?.Invoke(stat, stats[stat]);
+    }
+}

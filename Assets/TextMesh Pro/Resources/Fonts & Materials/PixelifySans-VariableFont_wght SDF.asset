@@ -73,9 +73,9 @@ Material:
     - _OutlineWidth: 0
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
-    - _ScaleRatioA: 1
-    - _ScaleRatioB: 1
-    - _ScaleRatioC: 1
+    - _ScaleRatioA: 0
+    - _ScaleRatioB: 0
+    - _ScaleRatioC: 0
     - _ScaleX: 1
     - _ScaleY: 1
     - _ShaderFlags: 0
@@ -173,7 +173,7 @@ MonoBehaviour:
     m_FamilyName: Pixelify Sans
     m_StyleName: Regular
     m_PointSize: 97
-    m_Scale: 1
+    m_Scale: 2
     m_UnitsPerEM: 1000
     m_LineHeight: 116.4
     m_AscentLine: 89.24

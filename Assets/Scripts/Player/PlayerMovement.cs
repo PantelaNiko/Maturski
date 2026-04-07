@@ -2,12 +2,17 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float MOVE_SPEED = 5f;
+    public float moveSpeed;
+    [SerializeField] PlayerStats stats;
     [SerializeField] private Rigidbody2D playerRB;
     [SerializeField] private Animator animator;
     [SerializeField] private float minX, maxX, minY, maxY;
     private Vector2 movement;
 
+    void Start()
+    {
+        moveSpeed = stats.GetStat(StatType.Speed);
+    }
     void Update()
     {
         movement.x = Input.GetAxisRaw("Horizontal");
@@ -22,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector2 moveDir = movement;
 
-        Vector2 newPos = playerRB.position + moveDir.normalized * MOVE_SPEED * Time.fixedDeltaTime;
+        Vector2 newPos = playerRB.position + moveDir.normalized * moveSpeed * Time.fixedDeltaTime;
 
         newPos.x = Mathf.Clamp(newPos.x, minX, maxX);
         newPos.y = Mathf.Clamp(newPos.y, minY, maxY);

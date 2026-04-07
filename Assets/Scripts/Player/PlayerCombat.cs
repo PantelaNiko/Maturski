@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
+    [SerializeField] PlayerStats stats;
     [SerializeField] List<SpellData> spellPool;
     [SerializeField] private Transform playerTransform;
     [SerializeField] private Animator animator;
@@ -16,12 +17,10 @@ public class PlayerCombat : MonoBehaviour
     private int currentSpell = 0;
 
     PlayerMovement movementScript;
-    float originalSpeed;
 
     void Start()
     {
         movementScript = GetComponent<PlayerMovement>();
-        originalSpeed = movementScript.MOVE_SPEED;
 
     }
     void Update()
@@ -35,14 +34,14 @@ public class PlayerCombat : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(0) && canCast && spellPool.Count > 0)
+        if (Input.GetMouseButtonDown(0) && canCast)
         {
             CastCurrentSpell();
         }
     }
     void StopStun()
     {
-        movementScript.MOVE_SPEED = originalSpeed;
+        movementScript.moveSpeed = stats.GetStat(StatType.Speed);
     }
 
     void CastCurrentSpell()
@@ -54,7 +53,7 @@ public class PlayerCombat : MonoBehaviour
 
         Vector3 directionalVector = (mousePosition - playerPosition).normalized;
 
-        movementScript.MOVE_SPEED = 0;
+        movementScript.moveSpeed = 0;
         animator.SetFloat("MouseHorizontal", directionalVector.x);
         animator.SetFloat("MouseVertical", directionalVector.y);
         animator.SetTrigger("MouseButton1");
@@ -72,6 +71,7 @@ public class PlayerCombat : MonoBehaviour
         if (currentSpell >= spellPool.Count)
         {
             cooldownTimer = recycleCooldown;
+            currentSpell = 0;
         }
         else
         {
