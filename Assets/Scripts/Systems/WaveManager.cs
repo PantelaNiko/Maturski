@@ -11,12 +11,13 @@ public enum GamePhase
 
 public class WaveManager : MonoBehaviour
 {
-    public float waveDuration = 60f;
+    public float waveDuration ;
     public GamePhase currentPhase;
     public int currentWave = 1;
 
     public List<EnemyData> enemyPool;
     
+    [SerializeField] TalentsManager talentsManager;
     [SerializeField] Vector2 spawnMin;
     [SerializeField] Vector2 spawnMax;
     [SerializeField] float minDistanceFromPlayer = 5f;
@@ -107,6 +108,8 @@ public class WaveManager : MonoBehaviour
 
     IEnumerator ShowRewards()
     {
+        Debug.Log("Phase 2");
+        talentsManager.PickTalent();
         yield return new WaitForSeconds(2f);
     }
 }

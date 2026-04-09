@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
+    public float gold = 0f;
+    public float experience = 0f;
     [SerializeField] float baseHP = 100f;
     [SerializeField] float baseSpeed = 10;
     private Dictionary<StatType, float> stats = new Dictionary<StatType, float>();

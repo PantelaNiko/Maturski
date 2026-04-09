@@ -383,6 +383,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73f99c5bd283f4e49ae3049d140d9ea8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
+  gold: 0
+  experience: 0
   baseHP: 100
   baseSpeed: 10
 --- !u!1 &77633458
@@ -3028,6 +3030,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1137598834}
   - component: {fileID: 1137598833}
+  - component: {fileID: 1137598835}
   m_Layer: 0
   m_Name: WaveManager
   m_TagString: Untagged
@@ -3047,13 +3050,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78146c83380bf7b45b32161a748ce3bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveManager
-  waveDuration: 60
+  waveDuration: 10
   currentPhase: 0
   currentWave: 1
   enemyPool:
   - prefab: {fileID: 8327680808979292732, guid: d5c4de441fcbd39439dcbca527a56dc2, type: 3}
     unlockWave: 0
     spawnWeight: 1
+  talentsManager: {fileID: 1137598835}
   spawnMin: {x: -22, y: -20}
   spawnMax: {x: 22, y: 20}
   minDistanceFromPlayer: 5
@@ -3073,6 +3077,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1137598835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1137598832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff19c60e990fd824096b05dc7355983d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TalentsManager
+  allTalents:
+  - talentName:
+      english: test1
+      serbian: testiranje1
+    description:
+      english: test1 description
+      serbian: testiranje1 description
+    image: {fileID: -1420869352781472879, guid: 28f0c76d22e2e1241b751a0d9fa51884, type: 3}
+    price: 20
+    stat: 0
+    value: 2
+  playerStats: {fileID: 42451203}
+  talentSelector: {fileID: 1012129317}
+  talentPrefab: {fileID: 191097522184538068, guid: 66b5fcda92d50d342b5d14c737aaa5d3, type: 3}
+  talentsToPick: 1
 --- !u!1 &1186412397
 GameObject:
   m_ObjectHideFlags: 0
