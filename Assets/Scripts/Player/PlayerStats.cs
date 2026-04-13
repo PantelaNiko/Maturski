@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
@@ -8,6 +9,9 @@ public class PlayerStats : MonoBehaviour
     public float experience = 0f;
     [SerializeField] float baseHP = 100f;
     [SerializeField] float baseSpeed = 10;
+
+    [SerializeField] TextMeshProUGUI goldText;
+    [SerializeField] TextMeshProUGUI expText;
     private Dictionary<StatType, float> stats = new Dictionary<StatType, float>();
 
     public event Action<StatType, float> OnStatChanged;
@@ -16,6 +20,9 @@ public class PlayerStats : MonoBehaviour
     {
         stats[StatType.Health] = baseHP;
         stats[StatType.Speed] = baseSpeed;
+
+        goldText.text = gold.ToString() + " G";
+        expText.text = experience.ToString() + " E";
     }
 
     public float GetStat(StatType stat)
@@ -33,5 +40,17 @@ public class PlayerStats : MonoBehaviour
     {
         stats[stat] += amount;
         OnStatChanged?.Invoke(stat, stats[stat]);
+    }
+
+    public void AddGold(float reward)
+    {
+        gold += reward;
+        goldText.text = gold.ToString() + " G";
+    }
+
+    public void AddExp(float reward)
+    {
+        experience += reward;
+        expText.text = experience.ToString() + " E";
     }
 }

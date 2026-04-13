@@ -9,4 +9,6 @@ public class EnemyData
     [Header("Spawn Settings")]
     public int unlockWave = 1;
     public float spawnWeight = 1f;
+    public float goldReward = 10f;
+    public float expReward = 10f;
 }

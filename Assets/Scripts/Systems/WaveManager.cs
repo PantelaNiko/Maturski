@@ -1,27 +1,35 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 
 public enum GamePhase
 {
     Wave,
-    Reward
+    Talent,
+    Spell
 }
 
 public class WaveManager : MonoBehaviour
 {
-    public float waveDuration ;
-    public GamePhase currentPhase;
+    [Header("Wave Settings")]
+    public float waveDuration = 10f;
     public int currentWave = 1;
 
+    public GamePhase currentPhase;
+
+    [Header("Enemy System")]
     public List<EnemyData> enemyPool;
-    
+
+    [Header("References")]
     [SerializeField] TalentsManager talentsManager;
+    [SerializeField] GameObject nextButton;
+
     [SerializeField] Vector2 spawnMin;
     [SerializeField] Vector2 spawnMax;
     [SerializeField] float minDistanceFromPlayer = 5f;
     [SerializeField] Transform playerTransform;
+
+    private bool phaseComplete = false;
 
     void Start()
     {
@@ -33,10 +41,19 @@ public class WaveManager : MonoBehaviour
         while (true)
         {
             currentPhase = GamePhase.Wave;
-            yield return StartCoroutine(RunWave());
+            nextButton.SetActive(false);
+            yield return RunWave();
 
-            currentPhase = GamePhase.Reward;
-            yield return StartCoroutine(ShowRewards());
+            currentPhase = GamePhase.Talent;
+            nextButton.SetActive(true);
+            phaseComplete = false;
+            talentsManager.PickTalent();
+
+            yield return new WaitUntil(() => phaseComplete);
+            currentPhase = GamePhase.Spell;
+            phaseComplete = false;
+
+            yield return new WaitUntil(() => phaseComplete);
         }
     }
 
@@ -59,6 +76,7 @@ public class WaveManager : MonoBehaviour
     void SpawnEnemy()
     {
         List<EnemyData> available = new List<EnemyData>();
+
         foreach (var e in enemyPool)
         {
             if (currentWave >= e.unlockWave)
@@ -68,9 +86,10 @@ public class WaveManager : MonoBehaviour
         if (available.Count == 0) return;
 
         float totalWeight = 0f;
-        foreach (var e in available) totalWeight += e.spawnWeight;
+        foreach (var e in available)
+            totalWeight += e.spawnWeight;
 
-        float r = UnityEngine.Random.Range(0f, totalWeight);
+        float r = Random.Range(0f, totalWeight);
         EnemyData chosen = null;
 
         foreach (var e in available)
@@ -84,19 +103,24 @@ public class WaveManager : MonoBehaviour
         }
 
         if (chosen == null) chosen = available[0];
+
         Vector3 spawnPos = GetRandomSpawnPosition();
 
         GameObject enemy = Instantiate(chosen.prefab, spawnPos, Quaternion.identity);
+
+        Enemy enemyComp = enemy.GetComponent<Enemy>();
+        enemyComp?.SetRewards(chosen.goldReward, chosen.expReward);
     }
 
     Vector3 GetRandomSpawnPosition()
     {
-        Vector3 pos = Vector3.zero;
+        Vector3 pos;
 
         while (true)
         {
-            float x = UnityEngine.Random.Range(spawnMin.x, spawnMax.x);
-            float z = UnityEngine.Random.Range(spawnMin.y, spawnMax.y);
+            float x = Random.Range(spawnMin.x, spawnMax.x);
+            float z = Random.Range(spawnMin.y, spawnMax.y);
+
             pos = new Vector3(x, 0f, z);
 
             if (Vector3.Distance(pos, playerTransform.position) >= minDistanceFromPlayer)
@@ -105,11 +129,8 @@ public class WaveManager : MonoBehaviour
 
         return pos;
     }
-
-    IEnumerator ShowRewards()
+    public void NextPhase()
     {
-        Debug.Log("Phase 2");
-        talentsManager.PickTalent();
-        yield return new WaitForSeconds(2f);
+        phaseComplete = true;
     }
 }
