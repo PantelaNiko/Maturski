@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 
 public class TalentsManager : MonoBehaviour
@@ -13,12 +14,20 @@ public class TalentsManager : MonoBehaviour
 
     [SerializeField] WaveManager waveManager;
 
+    private LocalizedString boughtText = new LocalizedString();
+
+    void Awake()
+    {
+        boughtText.english = "BOUGHT";
+        boughtText.serbian = "KUPLJENO";
+    }
+
     private float GROWTH_RATE = 1.5f;
 
 
     private float GetPrice(float basePrice)
     {
-        return basePrice * Mathf.Pow(GROWTH_RATE, waveManager.currentWave);
+        return Mathf.Round(basePrice * Mathf.Pow(GROWTH_RATE, waveManager.currentWave));
     }
     public List<Talent> GetRandomTalents(int count)
     {
@@ -47,21 +56,24 @@ public class TalentsManager : MonoBehaviour
             Transform buttonTransform = talentGUI.transform.Find("Button");
             Transform buttonTextTransform = buttonTransform.Find("Text");
 
-            iconTransform.GetComponent<UnityEngine.UI.Image>().sprite = talent.image;
+            iconTransform.GetComponent<Image>().sprite = talent.image;
             titleTransform.GetComponent<TextMeshProUGUI>().text = talent.talentName.Get();
             descriptionTransform.GetComponent<TextMeshProUGUI>().text = talent.description.Get();
-            buttonTextTransform.GetComponent<TextMeshProUGUI>().text = string.Concat(GetPrice(talent.price).ToString(), " E");
+            TextMeshProUGUI buttonText = buttonTextTransform.GetComponent<TextMeshProUGUI>();
+            buttonText.text = string.Concat(GetPrice(talent.price).ToString(), " E");
 
             Button buttonComponent = buttonTransform.GetComponent<Button>();
-            buttonComponent.onClick.AddListener(() => OnButtonClick(talent));
+            buttonComponent.onClick.AddListener(() => OnButtonClick(talent, buttonComponent, buttonText));
         }
     }
 
-    void OnButtonClick(Talent talent)
+    void OnButtonClick(Talent talent, Button button, TextMeshProUGUI buttonText)
     {
         float experience = playerStats.experience;
         if (experience >= GetPrice(talent.price))
         {
+            button.onClick.RemoveAllListeners();
+            buttonText.text = boughtText.Get();
             playerStats.ModifyStat(talent.stat, talent.value);
             playerStats.AddExp(-GetPrice(talent.price));
         }
@@ -69,6 +81,7 @@ public class TalentsManager : MonoBehaviour
 
     public void ClearTalents()
     {
+        talentSelector.SetActive(false);
         foreach (Transform child in talentSelector.transform)
         {
             Destroy(child.gameObject);

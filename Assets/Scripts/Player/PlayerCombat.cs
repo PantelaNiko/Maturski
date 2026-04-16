@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerCombat : MonoBehaviour
 {
     [SerializeField] PlayerStats stats;
+    [SerializeField] GameObject spellUI;
+    [SerializeField] GameObject spellPrefab;
     [SerializeField] List<SpellData> spellPool;
     [SerializeField] private Transform playerTransform;
     [SerializeField] private Animator animator;
@@ -66,7 +69,11 @@ public class PlayerCombat : MonoBehaviour
         if (spell != null)
             spell.Cast(mousePosition);
 
+        Transform selectedUI = spellUI.transform.GetChild(currentSpell).GetChild(0);
+        selectedUI.gameObject.SetActive(false);
+
         currentSpell++;
+
         canCast = false;
         if (currentSpell >= spellPool.Count)
         {
@@ -77,6 +84,8 @@ public class PlayerCombat : MonoBehaviour
         {
             cooldownTimer = castCooldown;  
         }
+        Transform nextSelectedUI = spellUI.transform.GetChild(currentSpell).GetChild(0);
+        nextSelectedUI.gameObject.SetActive(true);
 
         Invoke("StopStun", 1f / 3f);
     }
@@ -84,5 +93,7 @@ public class PlayerCombat : MonoBehaviour
     public void AddSpell(SpellData newSpell)
     {
         spellPool.Add(newSpell);
+        GameObject spellIcon = Instantiate(spellPrefab, spellUI.transform);
+        spellPrefab.GetComponent<Image>().sprite = newSpell.icon;
     }
 }

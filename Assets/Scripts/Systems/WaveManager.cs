@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public enum GamePhase
 {
@@ -12,7 +13,7 @@ public enum GamePhase
 public class WaveManager : MonoBehaviour
 {
     [Header("Wave Settings")]
-    public float waveDuration = 10f;
+    public float waveDuration = 60f;
     public int currentWave = 1;
 
     public GamePhase currentPhase;
@@ -22,7 +23,9 @@ public class WaveManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] TalentsManager talentsManager;
+    [SerializeField] SpellsManager spellsManager;
     [SerializeField] GameObject nextButton;
+    [SerializeField] GameObject enemies;
 
     [SerializeField] Vector2 spawnMin;
     [SerializeField] Vector2 spawnMax;
@@ -42,16 +45,21 @@ public class WaveManager : MonoBehaviour
         {
             currentPhase = GamePhase.Wave;
             nextButton.SetActive(false);
+            spellsManager.ClearSpells();
             yield return RunWave();
 
             currentPhase = GamePhase.Talent;
+            ClearEnemies();
             nextButton.SetActive(true);
             phaseComplete = false;
             talentsManager.PickTalent();
 
             yield return new WaitUntil(() => phaseComplete);
+            talentsManager.ClearTalents();
+
             currentPhase = GamePhase.Spell;
             phaseComplete = false;
+            spellsManager.RollSpells();
 
             yield return new WaitUntil(() => phaseComplete);
         }
@@ -59,7 +67,7 @@ public class WaveManager : MonoBehaviour
 
     IEnumerator RunWave()
     {
-        float spawnInterval = 2f / Mathf.Sqrt(currentWave);
+        float spawnInterval = 4f / Mathf.Sqrt(currentWave);
         float timer = 0f;
 
         while (timer < waveDuration)
@@ -106,10 +114,18 @@ public class WaveManager : MonoBehaviour
 
         Vector3 spawnPos = GetRandomSpawnPosition();
 
-        GameObject enemy = Instantiate(chosen.prefab, spawnPos, Quaternion.identity);
+        GameObject enemy = Instantiate(chosen.prefab, spawnPos, Quaternion.identity, enemies.transform);
 
         Enemy enemyComp = enemy.GetComponent<Enemy>();
         enemyComp?.SetRewards(chosen.goldReward, chosen.expReward);
+    }
+
+    void ClearEnemies()
+    {
+        foreach(Transform child in enemies.transform)
+        {
+            Destroy(child.gameObject);
+        }
     }
 
     Vector3 GetRandomSpawnPosition()
