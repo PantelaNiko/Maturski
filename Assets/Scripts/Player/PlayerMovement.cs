@@ -34,4 +34,21 @@ public class PlayerMovement : MonoBehaviour
 
         playerRB.MovePosition(newPos);
     }
+    void OnEnable()
+    {
+        stats.OnStatChanged += HandleStatChanged;
+    }
+
+    void OnDisable()
+    {
+        stats.OnStatChanged -= HandleStatChanged;
+    }
+
+    void HandleStatChanged(StatType type, float value)
+    {
+        if (type == StatType.Speed)
+        {
+            moveSpeed = value;
+        }
+    }
 }

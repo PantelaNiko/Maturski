@@ -2,8 +2,9 @@ public enum StatType
 {
     Health,
     Speed,
-    Damage,
-    Strength,
-    Agility,
-    Wisdom
+    CastSpeed,
+    RechargeSpeed,
+    MagicDamage,
+    FireDamage,
+    LightningDamage,
 }

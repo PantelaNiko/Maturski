@@ -8,7 +8,7 @@ public class PlayerStats : MonoBehaviour
     public float gold = 0f;
     public float experience = 0f;
     [SerializeField] float baseHP = 100f;
-    [SerializeField] float baseSpeed = 10;
+    [SerializeField] float baseSpeed = 5;
 
     [SerializeField] TextMeshProUGUI goldText;
     [SerializeField] TextMeshProUGUI expText;
@@ -18,11 +18,13 @@ public class PlayerStats : MonoBehaviour
 
     void Awake()
     {
+        foreach (StatType type in System.Enum.GetValues(typeof(StatType)))
+        {
+            stats[type] = 0f;
+        }
+
         stats[StatType.Health] = baseHP;
         stats[StatType.Speed] = baseSpeed;
-
-        goldText.text = gold.ToString() + " G";
-        expText.text = experience.ToString() + " E";
     }
 
     public float GetStat(StatType stat)

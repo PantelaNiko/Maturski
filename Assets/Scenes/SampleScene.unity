@@ -312,8 +312,8 @@ MonoBehaviour:
     price: 0
   playerTransform: {fileID: 42451197}
   animator: {fileID: 42451198}
-  recycleCooldown: 4
-  castCooldown: 1
+  rechargeCooldown: 4
+  castCooldown: 2
 --- !u!114 &42451200
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,6 +342,7 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 0
   healthBar: {fileID: 1503853083}
+  stats: {fileID: 42451203}
 --- !u!70 &42451202
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -394,7 +395,7 @@ MonoBehaviour:
   gold: 0
   experience: 0
   baseHP: 100
-  baseSpeed: 10
+  baseSpeed: 5
   goldText: {fileID: 1593113257}
   expText: {fileID: 845561461}
 --- !u!1 &77633458
@@ -2872,7 +2873,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 500 E
+  m_text: 0 E
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
   m_sharedMaterial: {fileID: 2140032, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
@@ -3161,7 +3162,7 @@ Transform:
   m_GameObject: {fileID: 1115464136}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.97132, y: 0.92827, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3198,7 +3199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78146c83380bf7b45b32161a748ce3bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveManager
-  waveDuration: 30
+  waveDuration: 20
   currentWave: 1
   currentPhase: 0
   enemyPool:
@@ -3244,15 +3245,88 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TalentsManager
   allTalents:
   - talentName:
-      english: test1
-      serbian: testiranje1
+      english: Speed
+      serbian: Brzina
     description:
-      english: test1 description
-      serbian: testiranje1 description
+      english: 'Makes you move faster
+
+        +1 Speed'
+      serbian: "Kre\u0107i se brze\n+1 Brzina"
+    image: {fileID: -1420869352781472879, guid: 28f0c76d22e2e1241b751a0d9fa51884, type: 3}
+    price: 20
+    stat: 1
+    value: 1
+  - talentName:
+      english: Health
+      serbian: "\u017Divot"
+    description:
+      english: Take more damage before dying
+      serbian: "Izdr\u017Ei vi\u0161e \u0161tete pre nego \u0161to umre\u0161\n+1
+        \u017Divot"
     image: {fileID: -1420869352781472879, guid: 28f0c76d22e2e1241b751a0d9fa51884, type: 3}
     price: 20
     stat: 0
-    value: 2
+    value: 10
+  - talentName:
+      english: Magic Damage
+      serbian: "Magi\u010Dna \u0160teta"
+    description:
+      english: 'Deal more damage with all your spells.
+
+        +1 Magic Damage'
+      serbian: "Radi vi\u0161e \u0161tete sa svim magijama.\n+1 Magi\u010Dna \u0160teta"
+    image: {fileID: -1420869352781472879, guid: 28f0c76d22e2e1241b751a0d9fa51884, type: 3}
+    price: 20
+    stat: 4
+    value: 1
+  - talentName:
+      english: Lightning Damage
+      serbian: "Munjevita \u0160teta"
+    description:
+      english: 'Deal more damage with lightning spells.
+
+        +1 Lightning Damage'
+      serbian: "Radi vi\u0161e \u0161tete sa munjevitim magijama.\n+1 Munjevita \u0160teta"
+    image: {fileID: -1420869352781472879, guid: 28f0c76d22e2e1241b751a0d9fa51884, type: 3}
+    price: 20
+    stat: 6
+    value: 1
+  - talentName:
+      english: Fire Damage
+      serbian: "Vatrena \u0160teta"
+    description:
+      english: 'Deal more damage with fire spells.
+
+        +1 Fire Damage'
+      serbian: "Radi vi\u0161e \u0161tete sa vatrenim magijama.\n+1 Vatrena \u0160teta"
+    image: {fileID: -1420869352781472879, guid: 28f0c76d22e2e1241b751a0d9fa51884, type: 3}
+    price: 20
+    stat: 5
+    value: 1
+  - talentName:
+      english: Cast Speed
+      serbian: "Brzina Izvo\u0111enja"
+    description:
+      english: 'Fire your next spells faster.
+
+        -0.1s Spell Cooldown'
+      serbian: "Br\u017Ee izvodi magije.\n-0.1s Izmedju izvodjenja "
+    image: {fileID: -1420869352781472879, guid: 28f0c76d22e2e1241b751a0d9fa51884, type: 3}
+    price: 20
+    stat: 2
+    value: 0.1
+  - talentName:
+      english: Recharge Speed
+      serbian: Brzina obnove
+    description:
+      english: 'Recharge your spell pool faster.
+
+        -0.1s Recharge Cooldown'
+      serbian: "Br\u017Ee obnovi sve magije.\n-0.1s pre obnove svih magija"
+    image: {fileID: -1420869352781472879, guid: 28f0c76d22e2e1241b751a0d9fa51884, type: 3}
+    price: 20
+    stat: 2
+    value: 0.1
   playerStats: {fileID: 42451203}
   talentSelector: {fileID: 1012129317}
   talentPrefab: {fileID: 191097522184538068, guid: 66b5fcda92d50d342b5d14c737aaa5d3, type: 3}
@@ -3273,12 +3347,24 @@ MonoBehaviour:
   commonSpells:
   - name:
       english: Magic orb
-      serbian: magicna kugla
+      serbian: Magicna Lopta
     icon: {fileID: 6152535969361677367, guid: 43692343555454642a3974c035f00d35, type: 3}
     spellPrefab: {fileID: 5906290929907609059, guid: 13265538ccc4f324da7fc0ff4c260789, type: 3}
     price: 250
-  epicSpells: []
-  legendarySpells: []
+  epicSpells:
+  - name:
+      english: Fireball
+      serbian: Vatrena lopta
+    icon: {fileID: 3411832389237755173, guid: 670570b6d83c0bd4da2648e3c5350916, type: 3}
+    spellPrefab: {fileID: 511055857677211899, guid: 57b64cc5e0039f34ead4d2538e830f22, type: 3}
+    price: 5
+  legendarySpells:
+  - name:
+      english: Lightning Bolt
+      serbian: Munja
+    icon: {fileID: 5436436641293085566, guid: b465c12f7b837fd40b31a14907f7bcea, type: 3}
+    spellPrefab: {fileID: 2484088609279808439, guid: a60c10585a791bc4b8cd6d4f4ae49726, type: 3}
+    price: 3
   commonPrefab: {fileID: 7351417820130872771, guid: 47e743f194b84b54a98d701db36457b7, type: 3}
   epicPrefab: {fileID: 3853040156091016617, guid: 68a06f70ccf47ee4fa6987e00a19ebc7, type: 3}
   legendaryPrefab: {fileID: 8273013195367674843, guid: a13a77574f9ea5e42a4609f03c0e9722, type: 3}
@@ -22197,7 +22283,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 500 G
+  m_text: 0 G
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
   m_sharedMaterial: {fileID: 2140032, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}

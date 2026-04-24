@@ -11,6 +11,7 @@ public class PlayerHealth : MonoBehaviour
     public GameObject healthBar;
     private RectMask2D healthBarMask;
     private float healthBarWidth;
+    [SerializeField] PlayerStats stats;
 
     void Start()
     {
@@ -55,5 +56,22 @@ public class PlayerHealth : MonoBehaviour
     void Die()
     {
         Debug.Log("Player has died!");
+    }
+    void OnEnable()
+    {
+        stats.OnStatChanged += HandleStatChanged;
+    }
+
+    void OnDisable()
+    {
+        stats.OnStatChanged -= HandleStatChanged;
+    }
+
+    void HandleStatChanged(StatType type, float value)
+    {
+        if (type == StatType.Health)
+        {
+            maxHealth = 100 + (int)value;
+        }
     }
 }

@@ -24,9 +24,9 @@ public class SpellsManager : MonoBehaviour
     [SerializeField] WaveManager waveManager;
 
     [Header("Rarity Weights")]
-    [SerializeField] float commonWeight = 70f;
-    [SerializeField] float epicWeight = 25f;
-    [SerializeField] float legendaryWeight = 5f;
+    [SerializeField] float commonWeight = 50f;
+    [SerializeField] float epicWeight = 35f;
+    [SerializeField] float legendaryWeight = 15f;
 
     [Header("Scaling")]
 

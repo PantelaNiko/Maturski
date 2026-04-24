@@ -11,9 +11,12 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private Transform playerTransform;
     [SerializeField] private Animator animator;
 
-    [SerializeField] float recycleCooldown = 0.5f;
+    [SerializeField] float rechargeCooldown;
 
-    [SerializeField] float castCooldown = 0f;
+    [SerializeField] float castCooldown;
+
+    float castSpeedReduction;
+    float rechargeSpeedReduction;
     private bool canCast = true;
 
     private float cooldownTimer = 0f;
@@ -77,12 +80,12 @@ public class PlayerCombat : MonoBehaviour
         canCast = false;
         if (currentSpell >= spellPool.Count)
         {
-            cooldownTimer = recycleCooldown;
+            cooldownTimer = Mathf.Max(0.05f, rechargeCooldown - rechargeSpeedReduction);
             currentSpell = 0;
         }
         else
         {
-            cooldownTimer = castCooldown;  
+            cooldownTimer = Mathf.Max(0.05f, castCooldown - castSpeedReduction);  
         }
         Transform nextSelectedUI = spellUI.transform.GetChild(currentSpell).GetChild(0);
         nextSelectedUI.gameObject.SetActive(true);
@@ -94,6 +97,27 @@ public class PlayerCombat : MonoBehaviour
     {
         spellPool.Add(newSpell);
         GameObject spellIcon = Instantiate(spellPrefab, spellUI.transform);
-        spellPrefab.GetComponent<Image>().sprite = newSpell.icon;
+        spellIcon.GetComponent<Image>().sprite = newSpell.icon;
+    }
+    void OnEnable()
+    {
+        stats = FindFirstObjectByType<PlayerStats>();
+
+        if (stats != null)
+            stats.OnStatChanged += HandleStatChanged;
+    }
+
+    void OnDisable()
+    {
+        if (stats != null)
+            stats.OnStatChanged -= HandleStatChanged;
+    }
+    void HandleStatChanged(StatType type, float value)
+    {
+        if (type == StatType.CastSpeed)
+            castSpeedReduction = value;
+
+        if (type == StatType.RechargeSpeed)
+            rechargeSpeedReduction = value;
     }
 }
