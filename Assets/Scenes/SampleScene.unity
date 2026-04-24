@@ -556,6 +556,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1557921269}
     m_Modifications:
+    - target: {fileID: 199366648230106159, guid: 26af7ac802ae30b4eb7da2b6bb1a8bb8, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 199366648230106159, guid: 26af7ac802ae30b4eb7da2b6bb1a8bb8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 199366648230106159, guid: 26af7ac802ae30b4eb7da2b6bb1a8bb8, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 199366648230106159, guid: 26af7ac802ae30b4eb7da2b6bb1a8bb8, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 199366648230106159, guid: 26af7ac802ae30b4eb7da2b6bb1a8bb8, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 199366648230106159, guid: 26af7ac802ae30b4eb7da2b6bb1a8bb8, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2661873861525780120, guid: 26af7ac802ae30b4eb7da2b6bb1a8bb8, type: 3}
       propertyPath: m_Name
       value: StarterSpell
@@ -2900,10 +2924,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 60
+  m_fontSize: 49.1
   m_fontSizeBase: 60
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -3357,14 +3381,14 @@ MonoBehaviour:
       serbian: Vatrena lopta
     icon: {fileID: 3411832389237755173, guid: 670570b6d83c0bd4da2648e3c5350916, type: 3}
     spellPrefab: {fileID: 511055857677211899, guid: 57b64cc5e0039f34ead4d2538e830f22, type: 3}
-    price: 5
+    price: 500
   legendarySpells:
   - name:
       english: Lightning Bolt
       serbian: Munja
     icon: {fileID: 5436436641293085566, guid: b465c12f7b837fd40b31a14907f7bcea, type: 3}
     spellPrefab: {fileID: 2484088609279808439, guid: a60c10585a791bc4b8cd6d4f4ae49726, type: 3}
-    price: 3
+    price: 1000
   commonPrefab: {fileID: 7351417820130872771, guid: 47e743f194b84b54a98d701db36457b7, type: 3}
   epicPrefab: {fileID: 3853040156091016617, guid: 68a06f70ccf47ee4fa6987e00a19ebc7, type: 3}
   legendaryPrefab: {fileID: 8273013195367674843, guid: a13a77574f9ea5e42a4609f03c0e9722, type: 3}
@@ -22137,6 +22161,7 @@ GameObject:
   - component: {fileID: 1557921271}
   - component: {fileID: 1557921270}
   - component: {fileID: 1557921272}
+  - component: {fileID: 1557921273}
   m_Layer: 5
   m_Name: SpellPool
   m_TagString: Untagged
@@ -22159,10 +22184,10 @@ RectTransform:
   - {fileID: 946596299}
   m_Father: {fileID: 1927634690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 440}
-  m_SizeDelta: {x: 1000, y: 200}
+  m_SizeDelta: {x: -920, y: -880}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1557921270
 MonoBehaviour:
@@ -22225,7 +22250,22 @@ MonoBehaviour:
   m_CellSize: {x: 100, y: 100}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
-  m_ConstraintCount: 2
+  m_ConstraintCount: 10
+--- !u!114 &1557921273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1557921268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2697a760f062e934f90b7b90b10f5ef1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  grid: {fileID: 1557921272}
+  columns: 10
+  baseCellSize: 100
 --- !u!1 &1593113255
 GameObject:
   m_ObjectHideFlags: 0
@@ -22310,10 +22350,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 60
+  m_fontSize: 49.1
   m_fontSizeBase: 60
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
