@@ -14,6 +14,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] float rechargeCooldown;
 
     [SerializeField] float castCooldown;
+    public bool castingEnabled = true;
 
     float castSpeedReduction;
     float rechargeSpeedReduction;
@@ -40,7 +41,7 @@ public class PlayerCombat : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(0) && canCast)
+        if (Input.GetMouseButtonDown(0) && canCast && castingEnabled)
         {
             CastCurrentSpell();
         }

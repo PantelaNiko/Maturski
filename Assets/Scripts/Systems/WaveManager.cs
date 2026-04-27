@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using TMPro;
+using System;
 
 public enum GamePhase
 {
@@ -26,16 +27,24 @@ public class WaveManager : MonoBehaviour
     [SerializeField] SpellsManager spellsManager;
     [SerializeField] GameObject nextButton;
     [SerializeField] GameObject enemies;
+    [SerializeField] TextMeshProUGUI waveNumberUI;
+    [SerializeField] TextMeshProUGUI waveTimerUI;
 
     [SerializeField] Vector2 spawnMin;
     [SerializeField] Vector2 spawnMax;
     [SerializeField] float minDistanceFromPlayer = 5f;
     [SerializeField] Transform playerTransform;
+    [SerializeField] PlayerHealth playerHealth;
+    [SerializeField] PlayerCombat playerCombat;
+
+    private LocalizedString waveName = new LocalizedString();
 
     private bool phaseComplete = false;
 
     void Start()
     {
+        waveName.english = "WAVE";
+        waveName.serbian = "TALAS";
         StartCoroutine(GameLoop());
     }
 
@@ -43,6 +52,7 @@ public class WaveManager : MonoBehaviour
     {
         while (true)
         {
+            playerCombat.castingEnabled = true;
             currentPhase = GamePhase.Wave;
             nextButton.SetActive(false);
             spellsManager.ClearSpells();
@@ -50,6 +60,7 @@ public class WaveManager : MonoBehaviour
 
             currentPhase = GamePhase.Talent;
             ClearEnemies();
+            playerCombat.castingEnabled = false;
             nextButton.SetActive(true);
             phaseComplete = false;
             talentsManager.PickTalent();
@@ -67,18 +78,31 @@ public class WaveManager : MonoBehaviour
 
     IEnumerator RunWave()
     {
+        playerHealth.Heal(playerHealth.maxHealth);
+        waveNumberUI.text = waveName.Get() + " " + currentWave.ToString();
         float spawnInterval = 4f / Mathf.Sqrt(currentWave);
+        float spawnTimer = 0f;
         float timer = 0f;
 
         while (timer < waveDuration)
         {
-            SpawnEnemy();
-            timer += spawnInterval;
-            yield return new WaitForSeconds(spawnInterval);
+            float dt = Time.deltaTime;
+            timer += dt;
+            spawnTimer += dt;
+
+            UpdateTimerDisplay(waveDuration - timer);
+
+            if (spawnTimer >= spawnInterval)
+            {
+                SpawnEnemy();
+                spawnTimer = 0f;
+            }
+
+            yield return null; // every frame
         }
 
         currentWave++;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0f);
     }
 
     void SpawnEnemy()
@@ -97,7 +121,7 @@ public class WaveManager : MonoBehaviour
         foreach (var e in available)
             totalWeight += e.spawnWeight;
 
-        float r = Random.Range(0f, totalWeight);
+        float r = UnityEngine.Random.Range(0f, totalWeight);
         EnemyData chosen = null;
 
         foreach (var e in available)
@@ -134,8 +158,8 @@ public class WaveManager : MonoBehaviour
 
         while (true)
         {
-            float x = Random.Range(spawnMin.x, spawnMax.x);
-            float z = Random.Range(spawnMin.y, spawnMax.y);
+            float x = UnityEngine.Random.Range(spawnMin.x, spawnMax.x);
+            float z = UnityEngine.Random.Range(spawnMin.y, spawnMax.y);
 
             pos = new Vector3(x, 0f, z);
 
@@ -148,5 +172,15 @@ public class WaveManager : MonoBehaviour
     public void NextPhase()
     {
         phaseComplete = true;
+    }
+
+    void UpdateTimerDisplay(float time)
+    {
+        time = Mathf.Max(time, 0f);
+        int minutes = Mathf.FloorToInt(time / 60);
+        int seconds = Mathf.FloorToInt(time % 60);
+        int milliseconds = Mathf.FloorToInt((time * 1000) % 1000) / 10;
+
+        waveTimerUI.text = string.Format("{0:00}:{1:00}:{2:00}", minutes, seconds, milliseconds);
     }
 }
