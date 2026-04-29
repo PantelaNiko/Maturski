@@ -4,7 +4,6 @@ using UnityEngine.UI;
 public class DynamicSpellGrid : MonoBehaviour
 {
     [SerializeField] GridLayoutGroup grid;
-    [SerializeField] int columns = 10;
 
     [SerializeField] float baseCellSize = 100f;
 

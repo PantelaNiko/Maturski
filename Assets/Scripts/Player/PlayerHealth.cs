@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,8 @@ public class PlayerHealth : MonoBehaviour
     private RectMask2D healthBarMask;
     private float healthBarWidth;
     [SerializeField] PlayerStats stats;
+
+    [SerializeField] WaveManager waveManager;
 
     void Start()
     {
@@ -55,7 +58,7 @@ public class PlayerHealth : MonoBehaviour
 
     void Die()
     {
-        Debug.Log("Player has died!");
+        waveManager.StopGame();
     }
     void OnEnable()
     {

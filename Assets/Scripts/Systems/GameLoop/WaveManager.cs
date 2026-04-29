@@ -36,16 +36,19 @@ public class WaveManager : MonoBehaviour
     [SerializeField] Transform playerTransform;
     [SerializeField] PlayerHealth playerHealth;
     [SerializeField] PlayerCombat playerCombat;
+    [SerializeField] DeathScreen deathScreen;
 
     private LocalizedString waveName = new LocalizedString();
 
     private bool phaseComplete = false;
 
+    private Coroutine gameLoopCoroutine;
+
     void Start()
     {
         waveName.english = "WAVE";
         waveName.serbian = "TALAS";
-        StartCoroutine(GameLoop());
+        gameLoopCoroutine = StartCoroutine(GameLoop());
     }
 
     IEnumerator GameLoop()
@@ -182,5 +185,11 @@ public class WaveManager : MonoBehaviour
         int milliseconds = Mathf.FloorToInt((time * 1000) % 1000) / 10;
 
         waveTimerUI.text = string.Format("{0:00}:{1:00}:{2:00}", minutes, seconds, milliseconds);
+    }
+
+    public void StopGame()
+    {
+        StopCoroutine(gameLoopCoroutine);
+        deathScreen.Appear();
     }
 }
