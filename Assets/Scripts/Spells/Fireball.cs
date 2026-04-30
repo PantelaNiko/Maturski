@@ -15,8 +15,8 @@ public class FireballSpell : Spell
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip castClip;
 
-    float magicMultiplier = 1f;
-    float fireMultiplier = 1f;
+    float magicMultiplier = 0f;
+    float fireMultiplier = 0f;
     PlayerStats stats;
 
     Vector3 direction;
@@ -77,9 +77,9 @@ public class FireballSpell : Spell
     void HandleStatChanged(StatType type, float value)
     {
         if (type == StatType.MagicDamage)
-            magicMultiplier = value * 0.1f;
+            magicMultiplier = value * 0.5f;
 
         if (type == StatType.FireDamage)
-            fireMultiplier = value * 0.2f;
+            fireMultiplier = value * 0.8f;
     }
 }

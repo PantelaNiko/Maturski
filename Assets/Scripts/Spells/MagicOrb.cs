@@ -55,6 +55,6 @@ public class MagicOrb : Spell
     void HandleStatChanged(StatType type, float value)
     {
         if (type == StatType.MagicDamage)
-            magicMultiplier = 1f + (value * 0.15f);
+            magicMultiplier = 1f + (value * 0.25f);
     }
 }

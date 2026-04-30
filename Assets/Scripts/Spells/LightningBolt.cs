@@ -6,10 +6,8 @@ public class ChainLightningSpell : Spell
 {
     [Header("Movement")]
     [SerializeField] float speed = 25f;
-    [SerializeField] float lifetime = 5f;
-
     [Header("Chain")]
-    [SerializeField] float damage = 40f;
+    [SerializeField] float damage = 200f;
     [SerializeField] float chainRange = 6f;
     [SerializeField] int maxChains = 5;
     [SerializeField] float damageFalloff = 0.8f;
@@ -17,13 +15,17 @@ public class ChainLightningSpell : Spell
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip castClip;
 
-    float magicMultiplier = 1f;
-    float lightningMultiplier = 1f;
+    float magicMultiplier = 0f;
+    float lightningMultiplier = 0f;
+
+    HashSet<Enemy> hit = new HashSet<Enemy>();
 
     PlayerStats stats;
 
     private Vector3 direction;
     private bool hasStarted = false;
+
+    private bool hasChained = false;
 
     public override void Cast(Vector3 mouseClickPos)
     {
@@ -31,8 +33,6 @@ public class ChainLightningSpell : Spell
         hasStarted = true;
         audioSource.clip = castClip;
         audioSource.Play();
-
-        Destroy(gameObject, lifetime);
     }
 
     void Update()
@@ -47,22 +47,28 @@ public class ChainLightningSpell : Spell
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (hasChained) return;
+
         Enemy first = other.GetComponent<Enemy>();
         if (first == null) return;
 
+        hasChained = true;
         StartCoroutine(ChainRoutine(first));
     }
 
     IEnumerator ChainRoutine(Enemy start)
     {
-        HashSet<Enemy> hit = new HashSet<Enemy>();
 
         Enemy current = start;
         float currentDamage = damage;
 
         for (int i = 0; i < maxChains; i++)
         {
-            if (current == null) break;
+            if (current == null)
+            {
+                Destroy(gameObject);
+                yield break;
+            }
 
             float finalDamage = currentDamage * (1f + magicMultiplier + lightningMultiplier);
 
@@ -72,8 +78,10 @@ public class ChainLightningSpell : Spell
             Enemy next = FindNext(current.transform.position, hit);
 
             if (next == null)
-                break;
-
+            {
+                Destroy(gameObject);
+                yield break;
+            }
             yield return MoveTo(next.transform.position);
 
             current = next;
@@ -143,13 +151,13 @@ public class ChainLightningSpell : Spell
     void HandleStatChanged(StatType type, float value)
     {
         if (type == StatType.MagicDamage)
-            magicMultiplier = value * 0.1f;
+            magicMultiplier = value * 0.5f;
 
         if (type == StatType.LightningDamage)
         {
-            lightningMultiplier = value * 0.2f;
+            lightningMultiplier = value * 0.8f;
             chainRange = 6f + value;
-            maxChains = 5 + (int)value;
+            maxChains = 5 + (int)value * 8;
         }
 
     }
