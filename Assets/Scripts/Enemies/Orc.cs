@@ -15,6 +15,8 @@ public class Orc : Enemy
     [Header("Components")]
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Animator animator;
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip castClip;
 
     private Transform playerTransform;
     private bool isAttacking;
@@ -49,6 +51,9 @@ public class Orc : Enemy
     public void Swing()
     {
         StartCoroutine(ResetAttack());
+
+        audioSource.clip = castClip;
+        audioSource.Play();
 
         Vector3 attackPos = transform.position +
             (spriteRenderer.flipX ? Vector3.left : Vector3.right) * attackRange;

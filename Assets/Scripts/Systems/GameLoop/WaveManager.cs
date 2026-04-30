@@ -81,9 +81,12 @@ public class WaveManager : MonoBehaviour
 
     IEnumerator RunWave()
     {
+        waveDuration += 5;
         playerHealth.Heal(playerHealth.maxHealth);
+        playerCombat.currentSpell = 0;
+        playerCombat.UpdateSpellPool();
         waveNumberUI.text = waveName.Get() + " " + currentWave.ToString();
-        float spawnInterval = 4f / Mathf.Sqrt(currentWave);
+        float spawnInterval = 4f / currentWave;
         float spawnTimer = 0f;
         float timer = 0f;
 
@@ -190,6 +193,8 @@ public class WaveManager : MonoBehaviour
     public void StopGame()
     {
         StopCoroutine(gameLoopCoroutine);
+        ClearEnemies();
+        playerCombat.castingEnabled = false;
         deathScreen.Appear();
     }
 }

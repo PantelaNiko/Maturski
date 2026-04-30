@@ -12,6 +12,8 @@ public class FireballSpell : Spell
     [SerializeField] float burnDamage = 5f;
     [SerializeField] float burnDuration = 3f;
     [SerializeField] GameObject burnVfxPrefab;
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip castClip;
 
     float magicMultiplier = 1f;
     float fireMultiplier = 1f;
@@ -26,6 +28,8 @@ public class FireballSpell : Spell
     {
         direction = (mouseClickPos - transform.position).normalized;
         initialized = true;
+        audioSource.clip = castClip;
+        audioSource.Play();
 
         Destroy(gameObject, lifetime);
     }

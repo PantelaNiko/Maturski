@@ -6,6 +6,8 @@ public class MagicOrb : Spell
     [SerializeField] float speed = 15f;
     [SerializeField] float damage = 50f;
     [SerializeField] float lifetime = 5f;
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip castClip;
 
     private Vector3 direction;
 
@@ -15,6 +17,8 @@ public class MagicOrb : Spell
     public override void Cast(Vector3 mouseClickPos)
     {
         direction = (mouseClickPos - transform.position).normalized;
+        audioSource.clip = castClip;
+        audioSource.Play();
         Destroy(gameObject, lifetime);
     }
 

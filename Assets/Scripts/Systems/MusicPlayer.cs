@@ -11,6 +11,7 @@ public class MusicPlayer : MonoBehaviour
 
     void Awake()
     {
+        audioSource.volume = 50;
         if (Instance != null)
         {
             Destroy(gameObject);
@@ -64,6 +65,6 @@ public class MusicPlayer : MonoBehaviour
 
     public void SetVolume(int value)
     {
-        audioSource.volume = Mathf.Clamp01(value);
+        audioSource.volume = Mathf.Clamp01(value / 100f);
     }
 }

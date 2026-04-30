@@ -162,8 +162,8 @@ MonoBehaviour:
   animator: {fileID: 42451198}
   minX: -22.5
   maxX: 22.5
-  minY: -19.5
-  maxY: 19.5
+  minY: -19
+  maxY: 20
 --- !u!50 &42451195
 Rigidbody2D:
   serializedVersion: 5
@@ -315,6 +315,7 @@ MonoBehaviour:
   rechargeCooldown: 4
   castCooldown: 2
   castingEnabled: 1
+  currentSpell: 0
 --- !u!114 &42451200
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3775,9 +3776,14 @@ MonoBehaviour:
   enemyPool:
   - prefab: {fileID: 8327680808979292732, guid: d5c4de441fcbd39439dcbca527a56dc2, type: 3}
     unlockWave: 0
-    spawnWeight: 1
+    spawnWeight: 80
     goldReward: 80
     expReward: 150
+  - prefab: {fileID: 9067662647085113318, guid: 767ed9489e01fc14b9a68c39253881e2, type: 3}
+    unlockWave: 5
+    spawnWeight: 20
+    goldReward: 500
+    expReward: 1000
   talentsManager: {fileID: 1137598835}
   spellsManager: {fileID: 1137598836}
   nextButton: {fileID: 1747974898}
@@ -3827,8 +3833,8 @@ MonoBehaviour:
 
         +1 Speed'
       serbian: "Kre\u0107i se brze\n+1 Brzina"
-    image: {fileID: -1420869352781472879, guid: 28f0c76d22e2e1241b751a0d9fa51884, type: 3}
-    price: 20
+    image: {fileID: 4694007364678901417, guid: 8564f0bb2e899f34f8031d9184d930b1, type: 3}
+    price: 100
     stat: 1
     value: 1
   - talentName:
@@ -3838,8 +3844,8 @@ MonoBehaviour:
       english: Take more damage before dying
       serbian: "Izdr\u017Ei vi\u0161e \u0161tete pre nego \u0161to umre\u0161\n+1
         \u017Divot"
-    image: {fileID: -1420869352781472879, guid: 28f0c76d22e2e1241b751a0d9fa51884, type: 3}
-    price: 20
+    image: {fileID: -8845260698105690896, guid: 8564f0bb2e899f34f8031d9184d930b1, type: 3}
+    price: 90
     stat: 0
     value: 10
   - talentName:
@@ -3850,8 +3856,8 @@ MonoBehaviour:
 
         +1 Magic Damage'
       serbian: "Radi vi\u0161e \u0161tete sa svim magijama.\n+1 Magi\u010Dna \u0160teta"
-    image: {fileID: -1420869352781472879, guid: 28f0c76d22e2e1241b751a0d9fa51884, type: 3}
-    price: 20
+    image: {fileID: -2180288992860003260, guid: 8564f0bb2e899f34f8031d9184d930b1, type: 3}
+    price: 50
     stat: 4
     value: 1
   - talentName:
@@ -3862,8 +3868,8 @@ MonoBehaviour:
 
         +1 Lightning Damage'
       serbian: "Radi vi\u0161e \u0161tete sa munjevitim magijama.\n+1 Munjevita \u0160teta"
-    image: {fileID: -1420869352781472879, guid: 28f0c76d22e2e1241b751a0d9fa51884, type: 3}
-    price: 20
+    image: {fileID: -4819437691104115080, guid: 8564f0bb2e899f34f8031d9184d930b1, type: 3}
+    price: 70
     stat: 6
     value: 1
   - talentName:
@@ -3874,8 +3880,8 @@ MonoBehaviour:
 
         +1 Fire Damage'
       serbian: "Radi vi\u0161e \u0161tete sa vatrenim magijama.\n+1 Vatrena \u0160teta"
-    image: {fileID: -1420869352781472879, guid: 28f0c76d22e2e1241b751a0d9fa51884, type: 3}
-    price: 20
+    image: {fileID: 5000730549932156952, guid: 8564f0bb2e899f34f8031d9184d930b1, type: 3}
+    price: 70
     stat: 5
     value: 1
   - talentName:
@@ -3886,8 +3892,8 @@ MonoBehaviour:
 
         -0.1s Spell Cooldown'
       serbian: "Br\u017Ee izvodi magije.\n-0.1s Izmedju izvodjenja "
-    image: {fileID: -1420869352781472879, guid: 28f0c76d22e2e1241b751a0d9fa51884, type: 3}
-    price: 20
+    image: {fileID: -5470013036652095632, guid: 8564f0bb2e899f34f8031d9184d930b1, type: 3}
+    price: 50
     stat: 2
     value: 0.1
   - talentName:
@@ -3898,8 +3904,8 @@ MonoBehaviour:
 
         -0.1s Recharge Cooldown'
       serbian: "Br\u017Ee obnovi sve magije.\n-0.1s pre obnove svih magija"
-    image: {fileID: -1420869352781472879, guid: 28f0c76d22e2e1241b751a0d9fa51884, type: 3}
-    price: 20
+    image: {fileID: -5278310724755141886, guid: 8564f0bb2e899f34f8031d9184d930b1, type: 3}
+    price: 75
     stat: 2
     value: 0.1
   playerStats: {fileID: 42451203}
@@ -23379,7 +23385,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MusicPlayer
   audioSource: {fileID: 1653260503}
-  tracks: []
+  tracks:
+  - {fileID: 8300000, guid: f30e4e35c2ba5374891cd271ca62e004, type: 3}
+  - {fileID: 8300000, guid: c632f9f6bf1238146b89c2eca776f715, type: 3}
+  - {fileID: 8300000, guid: 29122dc3a7f50b444a76030a5a1a54c0, type: 3}
+  - {fileID: 8300000, guid: 82dc3966b013a154dbc5b399b2c86d38, type: 3}
 --- !u!82 &1653260503
 AudioSource:
   m_ObjectHideFlags: 0
@@ -23393,7 +23403,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0

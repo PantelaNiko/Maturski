@@ -15,13 +15,13 @@ public class PlayerCombat : MonoBehaviour
 
     [SerializeField] float castCooldown;
     public bool castingEnabled = true;
+    public int currentSpell = 0;
 
     float castSpeedReduction;
     float rechargeSpeedReduction;
     private bool canCast = true;
 
     private float cooldownTimer = 0f;
-    private int currentSpell = 0;
 
     PlayerMovement movementScript;
 
@@ -73,8 +73,6 @@ public class PlayerCombat : MonoBehaviour
         if (spell != null)
             spell.Cast(mousePosition);
 
-        Transform selectedUI = spellUI.transform.GetChild(currentSpell).GetChild(0);
-        selectedUI.gameObject.SetActive(false);
 
         currentSpell++;
 
@@ -88,8 +86,8 @@ public class PlayerCombat : MonoBehaviour
         {
             cooldownTimer = Mathf.Max(0.05f, castCooldown - castSpeedReduction);  
         }
-        Transform nextSelectedUI = spellUI.transform.GetChild(currentSpell).GetChild(0);
-        nextSelectedUI.gameObject.SetActive(true);
+
+        UpdateSpellPool();
 
         Invoke("StopStun", 1f / 3f);
     }
@@ -120,5 +118,15 @@ public class PlayerCombat : MonoBehaviour
 
         if (type == StatType.RechargeSpeed)
             rechargeSpeedReduction = value;
+    }
+
+    public void UpdateSpellPool()
+    {
+        foreach(Transform spellFrame in spellUI.transform)
+        {
+            spellFrame.GetChild(0).gameObject.SetActive(false);
+        }
+        Transform nextSelectedUI = spellUI.transform.GetChild(currentSpell).GetChild(0);
+        nextSelectedUI.gameObject.SetActive(true);
     }
 }

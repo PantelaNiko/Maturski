@@ -22,7 +22,7 @@ public class TalentsManager : MonoBehaviour
         boughtText.serbian = "KUPLJENO";
     }
 
-    private float GROWTH_RATE = 1.5f;
+    private float GROWTH_RATE = 1.3f;
 
 
     private float GetPrice(float basePrice)

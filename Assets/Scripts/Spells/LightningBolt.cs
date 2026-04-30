@@ -14,6 +14,9 @@ public class ChainLightningSpell : Spell
     [SerializeField] int maxChains = 5;
     [SerializeField] float damageFalloff = 0.8f;
 
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip castClip;
+
     float magicMultiplier = 1f;
     float lightningMultiplier = 1f;
 
@@ -26,6 +29,8 @@ public class ChainLightningSpell : Spell
     {
         direction = (mouseClickPos - transform.position).normalized;
         hasStarted = true;
+        audioSource.clip = castClip;
+        audioSource.Play();
 
         Destroy(gameObject, lifetime);
     }
@@ -141,6 +146,11 @@ public class ChainLightningSpell : Spell
             magicMultiplier = value * 0.1f;
 
         if (type == StatType.LightningDamage)
+        {
             lightningMultiplier = value * 0.2f;
+            chainRange = 6f + value;
+            maxChains = 5 + (int)value;
+        }
+
     }
 }
